@@ -42,7 +42,6 @@
     </el-container>
   </el-container>
 
-
 </template>
 
 <script>
@@ -55,7 +54,7 @@ import Dictaphone from '@/components/Dictaphone'
 export default {
   name: 'hello',
   components: {
-    Dictaphone,
+    'dictaphone': Dictaphone,
     'my-upload': myUpload,
   },
   data() {
@@ -90,7 +89,7 @@ export default {
     upload(type) {
       this.upthing = new FormData();
       if (type === 'audio') {
-        this.upthing.append('file', this.audioblob, 'file.flac');
+        this.upthing.append('file', this.audioblob, 'file.webm');
         (async () => {
           try {
             const res = await fetch('http://localhost:3000/file', {
