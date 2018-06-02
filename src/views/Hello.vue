@@ -51,6 +51,9 @@ import myUpload from 'vue-image-crop-upload'
 import Dictaphone from '@/components/Dictaphone'
 // import request from '@/utils/request'
 
+const hostIP = 'http://localhost:3000';
+const token = '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv';
+
 export default {
   name: 'hello',
   components: {
@@ -92,36 +95,40 @@ export default {
         this.upthing.append('file', this.audioblob, 'file.webm');
         (async () => {
           try {
-            const res = await fetch('http://localhost:3000/file', {
+            const res = await fetch(`${hostIP}/file`, {
               method: 'POST',
               body: this.upthing,
               headers: {
-                Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+                Authorization: token,
               },
             });
             const resData = await res.json();
             if (res.ok) {
               alert('音频上传成功')
-              const res2 = await fetch(`http://localhost:3000/speechToText?audio_name=${resData.result.filename}`, {
+              const res2 = await fetch(`${hostIP}/speechToText?audio_name=${resData.result.filename}`, {
                 method: 'GET',
                 headers: {
-                  Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+                  Authorization: token,
                 },
               });
-              const resData2 = res2.json();
+              const resData2 = await res2.json();
               if (res2.ok) {
                 console.log(resData2)
                 const text = resData2.result;
-                const res3 = await fetch(`http://localhost:3000/speechToText?audio_name=${resData.result.filename}`, {
+                const res3 = await fetch(`${hostIP}/analizeText?text=${text}`, {
                   method: 'GET',
                   headers: {
-                    Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+                    Authorization: token,
                   },
                 });
                 const resData3 = await res3.json();
                 if (res3.ok) {
                   const tag = resData3.result;
                   this.speechList.append({text, tag});
+                  this.imgDataUrl = this.avatarObj['angry'];
+                }
+                else {
+                  this.speechList.append({text:'66666', tag:'happy'});
                 }
               }
             }
@@ -133,25 +140,25 @@ export default {
         this.upthing.append('file', this.data2blob(this.imgDataUrl, this.mime), 'file.jpg');
         (async () => {
           try {
-            const res = await fetch('http://localhost:3000/avatarFile', {
+            const res = await fetch(`${hostIP}/avatarFile`, {
               method: 'POST',
               body: this.upthing,
               headers: {
-                Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+                Authorization: token,
               },
             });
             const resData = await res.json();
             if (res.ok) {
-              console.log(resData)
-              const res2 = await fetch(`http://localhost:3000/generateAvatars?avatarName=${resData.result.filename}`, {
+              const res2 = await fetch(`${hostIP}/generateAvatars?avatarName=${resData.result.filename}`, {
                 method: 'POST',
                 headers: {
-                  Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+                  Authorization: token,
                 },
               });
               const resData2 = await res2.json();
               if (res2.ok) {
-                console.log(resData2)
+                a = 'angry';
+                console.log(resData2.result[a]);
                 this.avatarObj = resData2.result;
                 localStorage.avatarObject = this.avatarObj;
               }
@@ -183,10 +190,10 @@ export default {
     getAvatar() {
       (async () => {
         try {
-          const res = await fetch('http://localhost:3000/avatars', {
+          const res = await fetch(`${hostIP}/avatars`, {
             method: 'GET',
             headers: {
-              Authorization: '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv',
+              Authorization: token,
             },
           });
           const resData2 = res.json();

@@ -1,4 +1,4 @@
-// <template>
+<template>
   <div v-if="mediaRecorder">
     <slot :isRecording="isRecording"
           :startRecording="startRecording"
