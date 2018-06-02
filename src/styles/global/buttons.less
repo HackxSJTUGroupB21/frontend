@@ -1,0 +1,23 @@
+.button(@background-color: #fde000) {
+    border: none;
+    height: 50px;
+    border-radius: 2px;
+    background-color: @background-color;
+    text-align: center;
+    padding: 0 23px;
+    line-height: 250%;
+    cursor: pointer;
+    &:disabled {
+        color: #e4e4e4 !important;
+    }
+}
+
+.global--button-yellow {
+    .button;
+    border: solid 1px #fde000;
+}
+
+.global--button-white {
+    .button(#ffffff);
+    border: solid 1px #e5e6e6;
+}
