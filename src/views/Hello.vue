@@ -221,6 +221,7 @@ export default {
               if (res2.ok) {
                 this.$message('头像上传完毕');
                 this.avatarObj = resData2.result;
+                this.avatarObj['origin'] = this.imgDataUrl;
                 localStorage.avatarObject = this.avatarObj;
               }
             }
