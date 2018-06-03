@@ -22,11 +22,11 @@
           <img  :src="logo" />
           <div>HackxSJTU Group B21</div>
         </div>
-        
+
       </el-aside>
       <el-main>
         <div class="dialogs">
-          <div v-for="dialog in speechList">
+          <div v-for="dialog in speechList" @click="changeAvatar(dialog.tag)">
             <el-card class="box-card">
               <div class="cardB">
                 <div class="flex">
@@ -61,16 +61,16 @@
 </template>
 
 <script>
-// import Recorder from 'opus-recorder'
 import fetch from 'isomorphic-fetch'
 import myUpload from 'vue-image-crop-upload'
 import Dictaphone from '@/components/Dictaphone'
-// import request from '@/utils/request'
+
 const logo1 = require('@/assets/images/logo.png');
 const angryEm = require('@/assets/images/emoji/angry.png');
 const fearfulEm = require('@/assets/images/emoji/fearful.png');
 const happyEm = require('@/assets/images/emoji/happy.png');
 const sadEm = require('@/assets/images/emoji/sad.png');
+const originEm = require('@/assets/images/emoji/origin.png');
 
 const hostIP = 'http://localhost:3000';
 const token = '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv';
@@ -81,6 +81,7 @@ const emojiPack = {
   fearful: fearfulEm,
   happy: happyEm,
   sad: sadEm,
+  origin: originEm,
 }
 
 export default {
@@ -95,7 +96,7 @@ export default {
       audioblob: null,
       rec: null,
       recordingslist: [],
-      show: true,
+      show: false,
       cred: true,
       params: null,
       headers: null,
@@ -107,7 +108,7 @@ export default {
     };
   },
   mounted() {
-
+    this.getAvatar();
   },
   methods: {
     handleRecording({ blob, src }) {
@@ -178,10 +179,10 @@ export default {
                 Authorization: token,
               },
             });
-            this.$message('头像生成中，请稍等...');
+            this.$message('头像上传中，请稍等...');
             const resData = await res.json();
             if (res.ok) {
-              const res2 = await fetch(`${hostIP}/generateAvatars?avatarName=${resData.result.filename}&mock=true`, {
+              const res2 = await fetch(`${hostIP}/generateAvatars?avatarName=${resData.result.filename}&mock=false`, {
                 method: 'POST',
                 headers: {
                   Authorization: token,
@@ -189,7 +190,7 @@ export default {
               });
               const resData2 = await res2.json();
               if (res2.ok) {
-                this.$message('多表情头像生成完毕');
+                this.$message('头像上传完毕');
                 this.avatarObj = resData2.result;
                 localStorage.avatarObject = this.avatarObj;
               }
@@ -227,10 +228,11 @@ export default {
               Authorization: token,
             },
           });
-          const resData2 = res.json();
+          const resData2 = await res.json();
           if (res.ok) {
             this.avatarObj = resData2.result;
             localStorage.avatarObject = this.avatarObj;
+            this.imgDataUrl = this.avatarObj['origin'];
           }
         } catch (err) {
           console.log(err)
@@ -265,6 +267,10 @@ export default {
       console.log('-------- upload fail --------');
       console.log(status);
       console.log(field);
+    },
+    changeAvatar(tag) {
+      this.imgDataUrl = this.avatarObj[tag];
+      this.$nextTick();
     },
   },
 };
@@ -324,6 +330,7 @@ export default {
     margin: 50px 0 25px 0;
     height: 100px;
     line-height: 30px;
+    cursor: pointer;
   }
   .bottom {
     height: 20vh;
