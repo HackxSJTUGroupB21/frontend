@@ -1,7 +1,18 @@
 <template>
   <el-container>
     <el-header>相由音生&nbsp;&nbsp;&nbsp;&nbsp; Voice-based Face Emotional Substitution System</el-header>
-    <el-container>
+    <el-form  style="margin-top: 50px;" :inline="true" :model="formInline" class="demo-form-inline" v-if="showAll === false">
+      <el-form-item label="用户">
+        <el-input v-model="username" placeholder="用户名"></el-input>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input  type="password" v-model="password" placeholder="密码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit()">登录</el-button>
+      </el-form-item>
+    </el-form>
+    <el-container v-if="showAll === true">
       <el-aside width="300px">
         <button class="global--button-white"   v-if="imgDataUrl === ''" @click="toggleShow">upload</button>
         <img class="imageCon" v-else @click="toggleShow" :src="imgDataUrl" />
@@ -98,6 +109,9 @@ export default {
   },
   data() {
     return {
+      showAll: false,
+      username: '',
+      password: '',
       audioSource: null,
       audioblob: null,
       rec: null,
@@ -114,9 +128,18 @@ export default {
     };
   },
   mounted() {
+    if (localStorage.loginFlag) {
+      this.showAll = true;
+    }
     this.getAvatar();
   },
   methods: {
+    onSubmit() {
+      if (this.password === 'admin' && this.username === 'admin') {
+        this.showAll = true;
+        localStorage.loginFlag = true;
+      }
+    },
     handleRecording({ blob, src }) {
       console.log(blob, src)
       this.audioblob = blob;
