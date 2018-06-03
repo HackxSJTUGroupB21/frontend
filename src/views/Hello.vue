@@ -74,13 +74,13 @@ const happyEm = require('@/assets/images/emoji/happy.png');
 const sadEm = require('@/assets/images/emoji/sad.png');
 const originEm = require('@/assets/images/emoji/origin.png');
 
-const hostIP = 'http://localhost:3000';
-const token = '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv';
-const userId = '5b11fcdc4cbe2a48aae178ef';
+// const hostIP = 'http://localhost:3000';
+// const token = '6zYp6HAEQUJfu3RKumxN1527905500092zDBG6BnDvx4KdBq9SYkv';
+// const userId = '5b11fcdc4cbe2a48aae178ef';
 
-// const hostIP = 'http://202.120.1.152:3003';
-// const token = 'fX2Gbq8oPxOTGbhnTmzX1527989002910IoVwbt2dLlN4eDW4G1xk';
-// const userId = '5b13430a9aa1a43195d1ed8b';
+const hostIP = 'http://202.120.1.152:3003';
+const token = 'fX2Gbq8oPxOTGbhnTmzX1527989002910IoVwbt2dLlN4eDW4G1xk';
+const userId = '5b13430a9aa1a43195d1ed8b';
 
 const emojiPack = {
   angry: angryEm,
