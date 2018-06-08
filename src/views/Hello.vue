@@ -38,6 +38,9 @@
 
       </el-aside>
       <el-main>
+        <div class="titles">
+          <div class="titled" v-for="emo in emotions" @click="switchEmo(emo)">{{emo}}</div>
+        </div>
         <div class="dialogs">
           <div v-for="dialog in speechList" @click="changeAvatar(dialog.tag)">
             <el-card class="box-card">
@@ -101,6 +104,8 @@ const emojiPack = {
   origin: originEm,
 }
 
+const emotions = ['origin', 'angry', 'fearful', 'happy', 'sad'];
+
 export default {
   name: 'hello',
   components: {
@@ -125,6 +130,7 @@ export default {
       speechList:[],
       logo: logo1,
       emojiPack,
+      emotions,
     };
   },
   mounted() {
@@ -148,6 +154,9 @@ export default {
     },
     toggleShow() {
       this.show = !this.show;
+    },
+    switchEmo(emo) {
+      this.imgDataUrl = this.avatarObj[emo];
     },
     upload(type) {
       this.upthing = new FormData();
@@ -363,16 +372,16 @@ export default {
     cursor: pointer;
   }
   .bottom {
-    height: 20vh;
+    height: 15vh;
     width: 800px;
-    top: 80vh;
+    top: 85vh;
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .dialogs {
-    height: 700px;
+    height: 70vh;
     overflow: scroll;
   }
   .text {
@@ -389,7 +398,7 @@ export default {
   .logo {
     width: 150px;
     position: absolute;
-    top: 750px;
+    top: 75vh;
     left: 71px;
     line-height: 20px;
     img {
@@ -405,16 +414,18 @@ export default {
       }
     }
   }
-  .sad {
-    
+  .titles {
+    display: flex;
+    height: 20px;
+    line-height: 30px;
+    justify-content: space-around;
+    .titled {
+      height: 30px;
+      width: 70px;
+      border: 1px solid #f9aa33;
+      background-color: #FFF;
+      cursor: pointer;
+    }
   }
-  .happy {
 
-  }
-  .scared {
-
-  }
-  .angry {
-
-  }
 </style>
